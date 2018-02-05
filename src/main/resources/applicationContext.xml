@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Middle tier application context definition for the image database.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xsi:schemaLocation="http://www.springframework.org/schema/context
+							http://www.springframework.org/schema/context/spring-context-3.2.xsd
+							http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+							http://www.springframework.org/schema/aop
+							http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+							http://www.springframework.org/schema/tx
+							http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+							http://www.springframework.org/schema/mvc
+							http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+							">
+		<!-- 1.通过context标签加载数据库连接配置文件  -->
+		<context:property-placeholder location="classpath:jdbc.properties"/>
+		
+		<!-- 2.开启service层注解 -->
+		<context:component-scan base-package="com.chenys.service"></context:component-scan>
+		
+		<!-- 3.创建数据源 -->
+		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+			<property name="driverClassName" value="${jdbc.driver}"></property>
+			<property name="url" value="${jdbc.url}"></property>
+			<property name="password" value="${jdbc.password}"></property>
+			<property name="username" value="${jdbc.username}"></property>
+		</bean>
+		
+		<!-- 4.通过数据源,创建一个sqlSession工厂 -->
+		<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"></property>
+			<property name="mapperLocations">
+				<list>
+					<value>classpath:com/chenys/dao/*DaoMapper.xml</value>
+				</list>
+			</property>
+			<property name="typeAliasesPackage" value="com.chenys.entity"></property>
+		</bean>
+		
+		<!-- 5.配置Mapper文件扫描器，生成Dao代理对象 -->
+		<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<property name="basePackage" value="com.chenys.dao"></property>
+		</bean>
+		
+		<!-- 6.通过数据源，配置一个事务管理器 -->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		
+		<!-- 7.配置事务管理规则 -->
+		<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<tx:method name="get*" read-only="true"/>
+				<tx:method name="set*" read-only="true"/>
+				<tx:method name="*" propagation="REQUIRED"/>
+			</tx:attributes>
+		</tx:advice>
+		
+		<!-- 8.通过aop配置事务 -->
+		<aop:config>
+			<!-- 配置切入点 -->
+			<aop:pointcut expression="execution(* com.chenys.service.*.*(..))" id="servicePointcut"/>
+			<!-- 将切入点和需要做事务处理的地方编织在一起 -->
+			<aop:advisor advice-ref="transactionAdvice" pointcut-ref="servicePointcut"/>
+		</aop:config>
+		
+		
+		
+</beans>

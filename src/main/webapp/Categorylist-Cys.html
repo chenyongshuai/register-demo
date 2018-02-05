@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Categorylist-Cys.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+	<style type="text/css">
+		.nva li{
+			list-style: none;
+		}
+		.nva li .level2{
+			display:none;
+		}
+	</style>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  </head>
+  
+  <body>
+  		<div>
+  			<ul class="nva">
+  				
+			</ul>
+
+  		</div>
+  		
+  			
+  			
+  </body>
+  
+  <script type="text/javascript">
+	  var data = [
+	              {
+	                  id:"0",
+	                  text:"男士"
+	              },
+	              {
+	                  id:"1",
+	                  text:"女士"
+	              },
+	              {
+	                  pid:"0",
+	                  text:"男士衣服"
+	              },
+	              {
+	                  pid:"0",
+	                  text:"男士鞋袜"
+	              },
+	              {
+	                  pid:"1",
+	                  text:"女士衣服"
+	              },
+	              {
+	                  pid:"1",
+	                  text:"女士鞋袜"
+	              }
+	          ];
+	  for(var i=0; i<data.length; i++){
+		  if(!data[i].pid){
+			  $(".nva").append("<li class='hh'>"+data[i].text+"<div style='display:none;height:600px;width:600px;background-color:#00FFFF;position: absolute;left:100px;top: 10px;' class='level2'><ul class='nav"+data[i].id+"'></ul></div></li>");
+		  	  for(var j=0; j<data.length; j++){
+		  		  if(data[i].id==data[j].pid){
+		  			  $(".nav"+data[i].id).append("<li>"+data[j].text+"</li>");
+		  		  }
+		  	  }
+		  }
+	  }
+	  $(".hh").hover(function(){
+		 	 $(this).find(".level2").show();
+	  	  },function(){
+			  $(this).find(".level2").hide();
+	  });
+  </script>
+</html>

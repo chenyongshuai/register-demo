@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chenys.dao.UserDao">
+	<resultMap type="com.chenys.entity.User" id="map">
+		<result property="userId" column="user_id"/>
+		<result property="userEmail" column="user_email"/>
+		<result property="userPassword" column="user_password"/>
+		<result property="userPhone" column="user_phone"/>
+		<result property="userRole" column="user_role"/>
+		<result property="userState" column="user_state"/>
+	</resultMap>	
+	
+	<!--注册时验证账号是否已经存在-->
+	<select id="getUserByEmail" resultMap="map">
+		select user_id from sky_user where user_email = #{0} and user_state=1
+	</select>
+	
+	
+	<!-- 注册添加数据 -->
+	<insert id="addUser">
+		insert into sky_user values(seq_skyuser.nextval,#{userEmail},#{userPassword},#{userPhone},#{userRole},#{userState})
+	</insert>
+	
+	<!-- 邮箱激活用户操作 -->
+	<update id="activeUser">
+		update sky_user set user_state=1 where user_email=#{0}
+	</update>
+</mapper>

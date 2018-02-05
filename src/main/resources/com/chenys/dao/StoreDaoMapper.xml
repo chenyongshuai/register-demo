@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chenys.dao.StoreDao">
+	<resultMap type="com.chenys.entity.Store" id="map">
+		<result property="storeId" column="store_id"/>
+		<result property="storeName" column="store_name"/>
+		<result property="storeLevel" column="store_level"/>
+		<result property="storePhone" column="store_phone"/>
+		<result property="storeCellPhone" column="store_cellphone"/>
+		<result property="storePayType" column="store_payTypy"/>
+		<result property="storeEmail" column="store_email"/>
+		<result property="storeState" column="store_state"/>
+	</resultMap>	
+	
+</mapper>

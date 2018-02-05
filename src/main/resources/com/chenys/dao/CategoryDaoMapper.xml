@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chenys.dao.CategoryDao">
+	<resultMap type="com.chenys.entity.Category" id="map">
+		<result property="categoryId" column="secondId"/>
+		<result property="categoryName" column="secondName"/>
+		<collection property="categoryThird" ofType="com.chenys.entity.Category">
+			<result property="categoryId" column="thirdId"/>
+			<result property="categoryName" column="thirdName"/>
+		</collection>
+	</resultMap>	
+	
+	<select id="getCategoryByVirId" resultMap="map">
+		select t1.categoryid secondId,t1.categoryname secondName,t2.categoryid thirdId,t2.categoryname thirdName 
+		from category t1
+		left join category t2
+		on t1.categoryid=t2.parent_id
+		where t1.parent_id is null and t1.virtualcategoryid=#{virId}
+	</select>
+	
+	
+</mapper>

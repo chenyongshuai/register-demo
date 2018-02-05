@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chenys.dao.VirtualCategoryDao">
+	<resultMap type="com.chenys.entity.VirtualCategory" id="map">
+			<result property="virtualCategoryId" column="virtualCategoryId"/>
+			<result property="virtualCategoryName" column="virtualCategoryName"/>
+			<!-- <collection property="categorySecond" ofType="com.wuxian.sky.entity.Category">
+				<result property="categoryId" column="secondId"/>
+				<result property="categoryName" column="secondName"/>
+				<collection property="categoryThird" ofType="com.wuxian.sky.entity.Category">
+					<result property="categoryId" column="thirdId"/>
+					<result property="categoryName" column="thirdName"/>
+				</collection>
+			</collection> -->
+	</resultMap>	
+	
+	<!-- <select id="getVirtualCategory" resultMap="map">
+		select t3.*,t1.categoryid secondId,t1.categoryname secondName,t2.categoryid thirdId,t2.categoryname thirdName from category t1
+		left join category t2
+		on t1.categoryid=t2.parent_id
+		right join virtualcategory t3 
+		on t1.virtualcategoryid = t3.virtualcategoryid
+		where t1.parent_id is null
+	</select> -->
+	<select id="getVirtualCategory" resultMap="map">
+		select * from virtualcategory
+	</select>
+</mapper>

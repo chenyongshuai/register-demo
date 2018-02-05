@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.chenys.dao.ProductDao">
+	<resultMap type="com.chenys.entity.Product" id="map">
+		<result property="proId" column="pro_id"/>
+		<result property="proName" column="pro_name"/>
+		<result property="proPrice" column="pro_price"/>
+		<result property="proVolume" column="pro_volume"/>
+		<result property="proRepertory" column="pro_repertory"/>
+		<result property="proIntroduce" column="pro_introduce"/>
+		<result property="proPicture" column="pro_picture"/>
+		<result property="proType" column="pro_type"/>
+		<result property="proState" column="pro_state"/>
+		<result property="proDiscount" column="pro_discount"/>
+		<association property="category" javaType="com.chenys.entity.Category">
+			<result property="categoryId" column="thirdId"/>
+		</association>
+		<association property="store" javaType="com.chenys.entity.Store">
+			<result property="storeId" column="store_id"/>
+		</association>
+	</resultMap>	
+	
+	<!-- 每日特惠 -->
+	<select id="getProductOrderByDisCount" resultMap="map">
+		select t1.*,rownum r from 
+		    (select * from  sky_product
+		     where (pro_price-pro_discount)/pro_price>0.1
+		     order by (pro_price-pro_discount)/pro_price desc)t1
+		     where rownum &lt;=20
+	</select>
+	
+</mapper>
